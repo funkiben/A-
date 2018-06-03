@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import astar.AStar;
 import astar.ICostHeuristic;
-import net.funkitech.util.noise.PerlinNoiseGenerator;
+import example.noise.PerlinNoiseGenerator;
 
 public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 

@@ -1,4 +1,4 @@
-package net.funkitech.util.noise;
+package example.noise;
 
 /**
  * Base class for all noise generators

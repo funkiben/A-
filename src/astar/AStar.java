@@ -1,6 +1,5 @@
 package astar;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,27 +7,67 @@ import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// algorithm for computing paths
+/**
+ * 
+ * An A* implementation.
+ * 
+ * Can perform standard Dijkstra's Algorithm if given a constant heuristic function.
+ *
+ * @param <T> The type of nodes the algorithm will operate on
+ * 
+ */
 public class AStar<T extends INode<T>> {
 
-	private final PriorityQueue<NodeData> worklist = new PriorityQueue<NodeData>(new NodeDataComparator());
+	private final PriorityQueue<NodeData> worklist = new PriorityQueue<NodeData>((a, b) -> Double.compare(a.cost(), b.cost()));
 	private final Map<T, NodeData> calculatedData = new HashMap<T, NodeData>();
 	private final T start;
 	private final ICostHeuristic<T> heuristic;
-
+	
+	/**
+	 * 
+	 * Initializes the algorithm with a starting node and the heuristic function to use.
+	 * 
+	 * @param start The root node of the shortest path tree
+	 * @param heuristic A function that estimates the cost between two nodes
+	 */
 	public AStar(T start, ICostHeuristic<T> heuristic) {
 		this.start = start;
 		this.heuristic = heuristic;
 
 	}
 	
-	// gets the data associated with the given node
-	// may return null if there is none
+	/**
+	 * 
+	 * Gets the data for the given node that was last calculated by the last running of A*. 
+	 * 
+	 * <p>
+	 * May be null for the following reasons:
+	 * 
+	 * <ul>
+	 *  <li> the algorithm has never been run</li>
+	 *  <li> the node is not reachable from the starting node</li>
+	 *  <li> the goal was found without having the explore the given node</li>
+	 * </ul>
+	 * 
+	 * </p>
+	 * 
+	 * @param node The node whose data to retrieve
+	 * @return Resulting data calculated for the node by A*
+	 */
 	public NodeData getData(T node) {
 		return this.calculatedData.get(node);
 	}
 
-	// runs the algorithm, calculating a path from start to the given goal
+	/**
+	 * 
+	 * Performs A* until the given goal node is found.
+	 * 
+	 * <p>
+	 * If the goal is null and the heuristic is a constant function, then this will generate a full shortest-path tree for all other vertices.
+	 * </p>
+	 * 
+	 * @param goal
+	 */
 	public void calculate(T goal) {
 
 		NodeData startData = new NodeData(start, null, 0, this.heuristic.approxCost(this.start, goal));
@@ -38,7 +77,7 @@ public class AStar<T extends INode<T>> {
 
 		this.worklist.clear();
 
-		this.worklist.add(new NodeData(start, null, 0, this.heuristic.approxCost(this.start, goal)));
+		this.worklist.add(new NodeData(this.start, null, 0, this.heuristic.approxCost(this.start, goal)));
 
 		// these variables store information about the current node being
 		// visited
@@ -81,7 +120,7 @@ public class AStar<T extends INode<T>> {
 
 				// if neighbor has never been visited, then calculate its data
 				// this includes calculating its heuristic, giving it its cost
-				// from start through curNode, and setting is from curNode
+				// from start through curNode, and setting its from to curNode
 				// finally, add it to the worklist
 				if (neighborData == null) {
 
@@ -132,7 +171,7 @@ public class AStar<T extends INode<T>> {
 
 	}
 
-	// wrapper class for node to store some extra info about them
+	// wrapper class to store some extra data for each node
 	// stores: the node, the node before this node in the path, the cost from
 	// start to get to this node, and the heuristic for this node
 	public class NodeData {
@@ -168,17 +207,6 @@ public class AStar<T extends INode<T>> {
 
 		public double getHeuristicValue() {
 			return this.heuristicValue;
-		}
-
-	}
-
-	// class for comparing two nodes by their cost
-	class NodeDataComparator implements Comparator<NodeData> {
-
-		// gives negative if a has a lower cost than b, else positive
-		@Override
-		public int compare(NodeData a, NodeData b) {
-			return Double.compare(a.cost(), b.cost());
 		}
 
 	}

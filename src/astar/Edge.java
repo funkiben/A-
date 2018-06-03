@@ -1,6 +1,5 @@
 package astar;
 
-
 // represents a one directional edge of a graph
 public class Edge<T extends INode<T>> {
 
