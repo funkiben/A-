@@ -2,11 +2,18 @@ package astar;
 
 import java.util.Collection;
 
-// represents a node
-// generic type is the type of its neighbors
+/**
+ * Represents a node in a graph that can be used by A*
+ * 
+ * @param <T> The type of node that this node connects to
+ */
 public interface INode<T extends INode<T>> {
 
-	// list of all outgoing connections
+	/**
+	 * Gets all outgoing edges from this node.
+	 * 
+	 * @return A collection of edges leaving this node
+	 */
 	public Collection<Edge<T>> edges();
 
 }
