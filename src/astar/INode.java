@@ -5,7 +5,8 @@ import java.util.Collection;
 /**
  * Represents a node in a graph that can be used by A*
  * 
- * @param <T> The type of node that this node connects to
+ * @param <T>
+ *            The type of node that this node connects to
  */
 public interface INode<T extends INode<T>> {
 

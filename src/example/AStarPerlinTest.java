@@ -1,4 +1,5 @@
 package example;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -41,7 +42,7 @@ public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 	private GridNode[][] grid;
 	private double[][] heights;
 	private AStar<GridNode> astar;
-	
+
 	private int octaves = 3;
 	private double amplitude = 5;
 	private double frequency = 0.35;
@@ -63,7 +64,8 @@ public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 			for (int row = 0; row < tiles; row++) {
 
 				grid[col][row] = new GridNode(col, row);
-				heights[col][row] = Math.abs(noise.noise(col, row, octaves, frequency, amplitude, true));
+				heights[col][row] =
+						Math.abs(noise.noise(col, row, octaves, frequency, amplitude, true));
 
 				int c = (int) (heights[col][row] * 255);
 				perlinImg.setRGB(col, row, new Color(c, c, c).getRGB());
@@ -86,35 +88,47 @@ public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 				double nodeHeight = heights[col][row];
 
 				if (colPlusOne) {
-					node.addConnection(grid[col + 1][row], Math.abs(nodeHeight - heights[col + 1][row]) * heightWeight + 1);
+					node.addConnection(grid[col + 1][row],
+							Math.abs(nodeHeight - heights[col + 1][row]) * heightWeight + 1);
 				}
 
 				if (rowPlusOne) {
-					node.addConnection(grid[col][row + 1], Math.abs(nodeHeight - heights[col][row + 1]) * heightWeight + 1);
+					node.addConnection(grid[col][row + 1],
+							Math.abs(nodeHeight - heights[col][row + 1]) * heightWeight + 1);
 				}
 
 				if (colMinusOne) {
-					node.addConnection(grid[col - 1][row], Math.abs(nodeHeight - heights[col - 1][row]) * heightWeight + 1);
+					node.addConnection(grid[col - 1][row],
+							Math.abs(nodeHeight - heights[col - 1][row]) * heightWeight + 1);
 				}
 
 				if (rowMinusOne) {
-					node.addConnection(grid[col][row - 1], Math.abs(nodeHeight - heights[col][row - 1]) * heightWeight + 1);
+					node.addConnection(grid[col][row - 1],
+							Math.abs(nodeHeight - heights[col][row - 1]) * heightWeight + 1);
 				}
 
 				if (colPlusOne && rowPlusOne) {
-					node.addConnection(grid[col + 1][row + 1], Math.abs(nodeHeight - heights[col + 1][row + 1]) * heightWeight + root2);
+					node.addConnection(grid[col + 1][row + 1],
+							Math.abs(nodeHeight - heights[col + 1][row + 1]) * heightWeight
+									+ root2);
 				}
 
 				if (colMinusOne && rowPlusOne) {
-					node.addConnection(grid[col - 1][row + 1], Math.abs(nodeHeight - heights[col - 1][row + 1]) * heightWeight + root2);
+					node.addConnection(grid[col - 1][row + 1],
+							Math.abs(nodeHeight - heights[col - 1][row + 1]) * heightWeight
+									+ root2);
 				}
 
 				if (colMinusOne && rowMinusOne) {
-					node.addConnection(grid[col - 1][row - 1], Math.abs(nodeHeight - heights[col - 1][row - 1]) * heightWeight + root2);
+					node.addConnection(grid[col - 1][row - 1],
+							Math.abs(nodeHeight - heights[col - 1][row - 1]) * heightWeight
+									+ root2);
 				}
 
 				if (colPlusOne && rowMinusOne) {
-					node.addConnection(grid[col + 1][row - 1], Math.abs(nodeHeight - heights[col + 1][row - 1]) * heightWeight + root2);
+					node.addConnection(grid[col + 1][row - 1],
+							Math.abs(nodeHeight - heights[col + 1][row - 1]) * heightWeight
+									+ root2);
 				}
 
 			}
@@ -140,7 +154,6 @@ public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 
 		drawPath(g, Color.RED, this.astar);
 
-
 	}
 
 	void drawPath(Graphics g, Color color, AStar<GridNode> astar) {
@@ -153,7 +166,8 @@ public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 		GridNode prev = null;
 		for (GridNode node : path) {
 			if (prev != null) {
-				g.drawLine(node.x * tileSize + tileSize / 2, node.y * tileSize + tileSize / 2, prev.x * tileSize + tileSize / 2, prev.y * tileSize + tileSize / 2);
+				g.drawLine(node.x * tileSize + tileSize / 2, node.y * tileSize + tileSize / 2,
+						prev.x * tileSize + tileSize / 2, prev.y * tileSize + tileSize / 2);
 			}
 			prev = node;
 		}
@@ -194,7 +208,10 @@ public class AStarPerlinTest extends JFrame implements MouseMotionListener {
 
 				if (data != null) {
 
-					perlinImg.setRGB(col, row, new Color(0, (int) ((data.cost() - minCost) / range * 255.0 / 3) + c / 3, 0).getRGB());
+					perlinImg.setRGB(col, row,
+							new Color(0,
+									(int) ((data.cost() - minCost) / range * 255.0 / 3) + c / 3, 0)
+											.getRGB());
 
 				} else {
 

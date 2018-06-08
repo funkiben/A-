@@ -2,10 +2,10 @@ package example;
 import astar.ICostHeuristic;
 
 public class GridHeuristic implements ICostHeuristic<GridNode> {
-	
+
 	private final GridNode[][] grid;
 	private final double costWeight, distWeight;
-	
+
 	public GridHeuristic(GridNode[][] grid, double costWeight, double distWeight) {
 		this.grid = grid;
 		this.costWeight = costWeight;
